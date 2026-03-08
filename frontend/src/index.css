@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  body {
+    @apply bg-background text-darkGray font-sans antialiased selection:bg-primary-light selection:text-white;
+  }
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-md shadow-slate-200/50 border border-slate-100 p-6 transition-shadow duration-300 hover:shadow-lg hover:shadow-slate-200/60;
+}
+
+.btn-primary {
+  @apply bg-primary text-white font-semibold py-2.5 px-5 rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-sm shadow-primary/20 hover:shadow-md hover:shadow-primary/30 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100;
+}
+
+.btn-secondary {
+  @apply bg-white text-slate-700 font-semibold py-2.5 px-5 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all duration-300 active:scale-[0.98] disabled:opacity-60;
+}
+
+.input-field {
+  @apply w-full bg-white border border-slate-200 rounded-lg py-2.5 px-3.5 text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300;
+}
