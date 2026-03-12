@@ -28,6 +28,8 @@ const Register = () => {
             if (response.token) {
                 localStorage.setItem('token', response.token);
                 // Optional: Store user info if needed
+                
+                // Assuming newly registered users are not admins. 
                 setTimeout(() => navigate('/dashboard'), 1500);
             }
         }

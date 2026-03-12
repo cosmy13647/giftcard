@@ -25,8 +25,15 @@ const Login = () => {
                 localStorage.setItem('token', response.token);
                 if (response.data) {
                     localStorage.setItem('user', JSON.stringify(response.data));
+                    
+                    if (response.data.role === 'admin') {
+                        navigate('/admin/verify');
+                    } else {
+                        navigate('/dashboard'); // Keep default behavior for non-admins for now, or change to my-cards
+                    }
+                } else {
+                    navigate('/dashboard');
                 }
-                navigate('/dashboard');
             }
         }
     };
