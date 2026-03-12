@@ -3,11 +3,57 @@ import { getPendingGiftCards, verifyGiftCard, rejectGiftCard } from '../services
 
 // Modal for full card preview
 const CardPreviewModal = ({ card, onClose, onVerify, onReject, actionLoading }) => {
+    const [fullscreenImage, setFullscreenImage] = useState(null);
+
     if (!card) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+            
+            {/* Fullscreen Image Viewer Modal */}
+            {fullscreenImage && (
+                <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center p-4 bg-black/95 backdrop-blur-md" onClick={() => setFullscreenImage(null)}>
+                    <div className="absolute top-6 right-6 flex items-center gap-4">
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                const link = document.createElement('a');
+                                link.href = fullscreenImage;
+                                link.download = `giftcard-${card.brand || 'image'}-${Date.now()}.png`;
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl backdrop-blur-md transition-colors"
+                        >
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Download
+                        </button>
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setFullscreenImage(null);
+                            }}
+                            className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-xl backdrop-blur-md transition-colors"
+                        >
+                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <img
+                        src={fullscreenImage}
+                        alt="Fullscreen preview"
+                        className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                </div>
+            )}
+
             <div
                 className="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
                 onClick={e => e.stopPropagation()}
@@ -51,13 +97,18 @@ const CardPreviewModal = ({ card, onClose, onVerify, onReject, actionLoading }) 
                             <div className="space-y-2">
                                 <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Front</p>
                                 {card.frontImage ? (
-                                    <a href={card.frontImage} target="_blank" rel="noopener noreferrer">
+                                    <div onClick={() => setFullscreenImage(card.frontImage)} className="cursor-pointer relative group">
+                                        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center">
+                                            <svg className="w-8 h-8 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                            </svg>
+                                        </div>
                                         <img
                                             src={card.frontImage}
                                             alt="Front of card"
-                                            className="w-full h-44 object-cover rounded-xl border border-slate-200 hover:opacity-90 transition-opacity cursor-zoom-in"
+                                            className="w-full h-44 object-cover rounded-xl border border-slate-200"
                                         />
-                                    </a>
+                                    </div>
                                 ) : (
                                     <div className="w-full h-44 rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center">
                                         <p className="text-xs text-slate-400">No front image</p>
@@ -69,13 +120,18 @@ const CardPreviewModal = ({ card, onClose, onVerify, onReject, actionLoading }) 
                             <div className="space-y-2">
                                 <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Back</p>
                                 {card.backImage ? (
-                                    <a href={card.backImage} target="_blank" rel="noopener noreferrer">
+                                    <div onClick={() => setFullscreenImage(card.backImage)} className="cursor-pointer relative group">
+                                        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center">
+                                            <svg className="w-8 h-8 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                            </svg>
+                                        </div>
                                         <img
                                             src={card.backImage}
                                             alt="Back of card"
-                                            className="w-full h-44 object-cover rounded-xl border border-slate-200 hover:opacity-90 transition-opacity cursor-zoom-in"
+                                            className="w-full h-44 object-cover rounded-xl border border-slate-200"
                                         />
-                                    </a>
+                                    </div>
                                 ) : (
                                     <div className="w-full h-44 rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center">
                                         <p className="text-xs text-slate-400">No back image</p>
