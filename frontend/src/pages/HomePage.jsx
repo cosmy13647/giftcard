@@ -37,10 +37,10 @@ const HomePage = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     {token ? (
                         <Link
-                            to="/dashboard"
+                            to="/admin/verify"
                             className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-primary text-white font-semibold shadow-lg shadow-primary/25 hover:bg-primary-dark hover:-translate-y-0.5 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30"
                         >
-                            Go to Dashboard
+                            Verify
                         </Link>
                     ) : (
                         <>
